@@ -10,6 +10,11 @@ import { credentials } from "./middleware/credentials.js";
 import { dbMysqlPool } from "./config/dbMysqlPool.js";
 import {dbMysqlPoolPromise} from "./config/dbMysqlPoolPromise.js";
 
+
+//*******************TEST ZONE***************//
+
+
+//*******************TEST ZONE***************//
 const app = express();
 app.use(
   expressCspHeader({
@@ -36,21 +41,21 @@ app.use(cors(corsOptions));
 // built-in middleware to handle URL encoded data
 // in other words, form data:
 // "content-type: application/x-www-form-urlencoded"
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 // built-in middleware for json
 app.use(express.json());
 
 
 // ----TEST----TEST----TEST
-app.get("/test", (req, res) => {
-    res.json("Express Server Test from server.js.")
-})
 
+// ----TEST----TEST----TEST
 
 
 connectionDB.execute("open", () => {
   // Port listener
   app.listen(PORT_SERVER, () => console.log(`Server connected on port: ${PORT_SERVER}`));
-});
+  });
+
+  
 
 //CREATE DATABASE IF NOT EXISTS DBname

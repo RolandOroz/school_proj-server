@@ -19,3 +19,5 @@ dbMysqlPool.getConnection((err) => {
   if (err) throw err;  
   console.log(`Mysql DB connected on port: ${PORT_MYSQL}`);
 });
+
+
