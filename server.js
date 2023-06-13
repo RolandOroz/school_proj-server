@@ -11,10 +11,6 @@ import { dbMysqlPool } from "./config/dbMysqlPool.js";
 import {dbMysqlPoolPromise} from "./config/dbMysqlPoolPromise.js";
 
 
-//*******************TEST ZONE***************//
-
-
-//*******************TEST ZONE***************//
 const app = express();
 app.use(
   expressCspHeader({
@@ -47,6 +43,10 @@ app.use(express.json());
 
 
 // ----TEST----TEST----TEST
+app.get("/test", (req, res) => {
+      res.json("TEST");    
+    
+})
 
 // ----TEST----TEST----TEST
 
