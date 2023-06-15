@@ -29,6 +29,7 @@
     "mysql2-promise": "^0.1.4",
     "nodemon": "^2.0.22",
     "pm2": "^5.3.0",
+    "sequelize": "^6.32.0",
     "uuid": "^9.0.0",
     "winston": "^3.9.0"
   }

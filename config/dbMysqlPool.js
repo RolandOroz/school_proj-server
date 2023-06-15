@@ -10,6 +10,7 @@ export const dbMysqlPool = mysql.createPool({
   connectionLimit: process.env.DATABASE_POOL_LIMIT,
   maxIdle: process.env.DATABASE_POOL_MAX_IDLE, // max idle connections, the default value is the same as `connectionLimit`
   idleTimeout: process.env.DATABASE_POOL_IDLE_TIMEOOUT, // idle connections timeout, in milliseconds, the default value 60000
+  connectTimeout: process.env.DATABASE_POOL_CONNECT_TIMEOOUT,
   queueLimit: process.env.DATABASE_POOL_QUEUE_LIMIT,
   enableKeepAlive: process.env.DATABASE_POOL_KEEP_ALIVE,
   keepAliveInitialDelay: process.env.DATABASE_POOL_KEEP_ALIVE_INITIAL_DELAY,

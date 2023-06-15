@@ -1,4 +1,3 @@
-import {dbMysqlPool} from "./dbMysqlPool.js";
 import mysqlPromise from "mysql2-promise";
 
 const PORT_MYSQL = process.env.DATABASE_PORT;
