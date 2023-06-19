@@ -1,8 +1,11 @@
-import { seqDbConnection, DataTypes } from "../config/dbSequelizeMysqlPool.js";
+import {
+  dbSequlizeMysqlPool,
+  DataTypes,
+} from "../config/dbSequelizeMysqlPool.js";
 
-const { DataTypes } = Sequelize;
+
 // SQL "users" table
-export const userSchema = new seqDbConnection.define(
+export const userSchema = dbSequlizeMysqlPool.define(
   "users",
   {
     _id: {
@@ -11,18 +14,22 @@ export const userSchema = new seqDbConnection.define(
       autoIncrement: true,
       allowNull: false,
     },
-    uuid: {},
+    uuid: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+    },
     username: {
-      type: DataTypes.STRING(55),
+      type: DataTypes.STRING(105),
       allowNull: false,
       unique: true,
       validate: {
         notEmpty: true,
-        len: [2,55]
+        len: [2, 105],
       },
     },
     email: {
-      type: DataTypes.STRING(55),
+      type: DataTypes.STRING(250),
       allowNull: false,
       unique: true,
       validate: {
@@ -30,9 +37,15 @@ export const userSchema = new seqDbConnection.define(
         len: [4, 250],
       },
     },
-    password: {},
-    roles: {},
-    refreshToken: {},
+    password: {
+      type: DataTypes.CHAR(60),
+      allowNull: false,
+      unique: true,
+    },
+    //roles: {},
+    refreshToken: {
+      type: DataTypes.STRING(255),
+    },
   },
   {
     // Prevent auto pluralisation of entity name

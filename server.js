@@ -10,10 +10,13 @@ import { credentials } from "./middleware/credentials.js";
 import { dbMysqlPool } from "./config/dbMysqlPool.js";
 import { dbMysqlPoolPromise } from "./config/dbMysqlPoolPromise.js";
 import  {dbSequlizeMysqlPool} from "./config/dbSequelizeMysqlPool.js";
+import { userSchema } from "./sqlEntities/userEntity.js";
+import { roleSchema } from "./sqlEntities/rolesEntity.js";
+
 const PORT_MYSQL = process.env.DATABASE_PORT;
 
 //*******************TEST ZONE***************//
-const connectionDBSequlize = async () => {
+/* const connectionDBSequlize = async () => {
   try {
     await dbSequlizeMysqlPool.authenticate();
     console.log(`Sequelize MysqlDB on port: ${PORT_MYSQL}`);
@@ -21,7 +24,30 @@ const connectionDBSequlize = async () => {
     console.error("Unable to connect to the database:", error);
   }
 };
-connectionDBSequlize();
+connectionDBSequlize(); */
+
+const createTableUser = async (data) => {
+  try {
+    await userSchema.sync({ alter: true });
+    console.log("Table Created!");
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+} 
+
+const createTableRole = async (data) => {
+  try {
+    await roleSchema.sync({ alter: true });
+    console.log("Table Created!");
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}; 
+createTableUser();
+createTableRole();
+
 //*******************TEST ZONE***************//
 const app = express();
 app.use(
