@@ -3,9 +3,9 @@ import {
   DataTypes,
 } from "../config/dbSequelizeMysql/dbSequelizeMysqlPool.js";
 
-// SQL "roles" table 
-export const roleSchema = dbSequlizeMysqlPool.define(
-  "roles",
+// SQL "expire_times" table
+export const expirationTimeEntity = dbSequlizeMysqlPool.define(
+  "expire_times",
   {
     _id: {
       type: DataTypes.INTEGER.UNSIGNED,
@@ -13,15 +13,17 @@ export const roleSchema = dbSequlizeMysqlPool.define(
       autoIncrement: true,
       allowNull: false,
     },
-    role_name: {
-      type: DataTypes.ENUM("admin", "editor", "user"),
-      unique: true,
-      allowNull: false
+    short: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-    role_code: {
-      type: DataTypes.SMALLINT.UNSIGNED,
-      unique: true,
-      allowNull: false
+    medium: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    long: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   {
@@ -31,4 +33,3 @@ export const roleSchema = dbSequlizeMysqlPool.define(
     timestamps: false,
   }
 );
-

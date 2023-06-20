@@ -1,7 +1,8 @@
 import {
   dbSequlizeMysqlPool,
   DataTypes,
-} from "../config/dbSequelizeMysqlPool.js";
+} from "../config/dbSequelizeMysql/dbSequelizeMysqlPool.js";
+import { roleSchema } from "./rolesEntity.js";
 
 
 // SQL "users" table
@@ -14,11 +15,6 @@ export const userSchema = dbSequlizeMysqlPool.define(
       autoIncrement: true,
       allowNull: false,
     },
-    uuid: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-    },
     username: {
       type: DataTypes.STRING(105),
       allowNull: false,
@@ -29,12 +25,12 @@ export const userSchema = dbSequlizeMysqlPool.define(
       },
     },
     email: {
-      type: DataTypes.STRING(250),
+      type: DataTypes.STRING(60),
       allowNull: false,
       unique: true,
       validate: {
         isEmail: true,
-        len: [4, 250],
+        len: [7, 60],
       },
     },
     password: {
@@ -42,7 +38,10 @@ export const userSchema = dbSequlizeMysqlPool.define(
       allowNull: false,
       unique: true,
     },
-    //roles: {},
+/*     roles: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false
+    }, */
     refreshToken: {
       type: DataTypes.STRING(255),
     },
@@ -55,3 +54,4 @@ export const userSchema = dbSequlizeMysqlPool.define(
   }
 );
 
+//userSchema.hasMany(roleSchema);

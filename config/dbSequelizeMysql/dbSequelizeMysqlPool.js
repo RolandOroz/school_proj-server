@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import { dbMysqlPool } from "./dbMysqlPool.js"; 
+import { dbMysqlPool } from "../dbMysql2/dbMysqlPool.js"; 
 
 
 export const dbSequlizeMysqlPool = new Sequelize(
@@ -16,6 +16,17 @@ export const dbSequlizeMysqlPool = new Sequelize(
       min: dbMysqlPool.queueLimit,
       acquire: dbMysqlPool.connectTimeout,
       idle: dbMysqlPool.idleTimeout,
+    },
+    // Deadlock Handler
+    retry: {
+      match: [
+        Sequelize.ConnectionError,
+        Sequelize.ConnectionTimedOutError,
+        Sequelize.TimeoutError,
+        /Deadlock/i,
+        "SQLITE_BUSY",
+      ],
+      max: 3,
     },
   }
 ); 
