@@ -2,7 +2,7 @@
 
 import { userSchema } from "../sqlEntities/userEntity";
 
-const getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
   const users = await userSchema.findAll({
     order: [["username", "ASC"]],
     attributes: ["username", "email"],

@@ -10,6 +10,7 @@ import { credentials } from "./middleware/credentials.js";
 import { dbMysqlPool } from "./config/dbMysql2/dbMysqlPool.js";
 import { userSchema } from "./sqlEntities/userEntity.js";
 import { roleSchema } from "./sqlEntities/rolesEntity.js";
+import root from "./routes/root.js"
 
 const PORT_MYSQL = process.env.DATABASE_PORT;
 
@@ -81,7 +82,8 @@ app.use(express.json());
 app.get("/test", (req, res) => {
   res.json("TEST__TEST");
 });
-
+app.use("/users", root);
+//app.use("/", import("./routes/root.js"));
 // ----TEST----TEST----TEST
 
 connectionDB.execute("open", () => {
