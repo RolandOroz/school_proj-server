@@ -1,7 +1,7 @@
-//TODO creating user controller
+
 
 import { userSchema } from "../sqlEntities/userEntity.js";
-
+//DONE
 export const getAllUsers = async (req, res) => {
   const users = await userSchema.findAll();
     if (!users) return res.status(204).json({ message: "No users found" });
@@ -22,7 +22,7 @@ const deleteUser = async (req, res) => {
   const result = await user.deleteOne({ _id: req.body.id });
   res.json(result);
 };
-
+//DONE
 export const getUser = async (req, res) => {
   if (!req?.params?._id)
     return res.status(400).json({ message: "User ID required" });
