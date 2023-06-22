@@ -24,13 +24,15 @@ const deleteUser = async (req, res) => {
 };
 //DONE
 export const getUser = async (req, res) => {
-  if (!req?.params?._id)
+  const id = req.params._id;
+  if (!id)
+  
     return res.status(400).json({ message: "User ID required" });
-  const user = await userSchema.findOne({ _id: req.params._id });
+  const user = await userSchema.findByPk(id);
   if (!user) {
     return res
       .status(204)
-      .json({ message: `User ID ${req.params._id} not found` });
+      .json({ message: `User ID ${id} not found` });
   }
   res.json(user);
 };
