@@ -11,10 +11,16 @@ import { dbMysqlPool } from "./config/dbMysql2/dbMysqlPool.js";
 import { userSchema } from "./sqlEntities/userEntity.js";
 import { roleSchema } from "./sqlEntities/rolesEntity.js";
 import root from "./routes/root.js"
+import { logger } from "./middleware/logEvents.js";
+import { fileURLToPath } from "node:url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const PORT_MYSQL = process.env.DATABASE_PORT;
 
 //*******************TEST ZONE***************//
+
+
 
 const createTableUser = async (data) => {
   try {
@@ -80,20 +86,36 @@ app.use(express.json());
 
 // ----TEST----TEST----TEST
 app.get("/test", (req, res) => {
-  res.json("TEST__TEST");
+  res.status(200).send("<h1>TEST__TEST__SERVER_1</h1>");
 });
 app.use("/users", root);
 //app.use("/", import("./routes/root.js"));
+
 // ----TEST----TEST----TEST
+
+
+// Custom 404 Page
+app.all("*", (req, res) => {
+  res.status(404);
+  if (req.accepts("html")) {
+    res.sendFile(path.join(__dirname, "views", "404.html"));
+  } else if (req.accepts("json")) {
+    res.json({ error: "404 Not Found!" });
+  } else {
+    res.type("txt").send("404 Not Found");
+  }
+});
+
 
 connectionDB.execute("open", () => {
   // Port listener
-
-
   app.listen(PORT_SERVER, () =>
     console.log(`Server connected on port: ${PORT_SERVER}`)
   );
 });
+
+// Custom middleware logger
+app.use(logger)
 
 
 
@@ -105,4 +127,5 @@ dbMysqlPool.query(
     if (err) return console.error(err);
   }
 );
+
 

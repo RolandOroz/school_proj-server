@@ -1,39 +1,34 @@
-import { winston } from "winston";
+import { format } from "date-fns";
+import { v4 as uuid } from "uuid";
+import fs from "fs";
+import fsPromises from "fs/promises";
+import path from "path";
+import winston from "winston";
+import { fileURLToPath } from "node:url";
 
-export const logEvents = winston.createLogger({
-  level: "info",
-  format: winston.format.json(),
-  defaultMeta: { service: "user-service" },
-  transports: [
-    //
-    // - Write all logs with importance level of `error` or less to `error.log`
-    // - Write all logs with importance level of `info` or less to `combined.log`
-    //
-    new winston.transports.File({
-      filename: "../logs/errorLog/error.log",
-      level: "error",
-    }),
-    new winston.transports.File({
-      filename: "../logs/combinedLog/combined.log",
-    }),
-    new transports.Console({
-      level: "info",
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple()
-      ),
-    }),
-  ],
-});
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-//
-// If we're not in production then log to the `console` with the format:
-// `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-//
-if (process.env.NODE_ENV !== "production") {
-  logger.add(
-    new winston.transports.Console({
-      format: winston.format.simple(),
-    })
-  );
+export const logEvents = async (message, logName) => {
+  const dateTime = `${format(new Date(), "dd-MM-yyyy\tHH:mm:ss")}`;
+  const logItem = `${dateTime}\t${uuid()}\t${message}\n`;
+
+  try {
+    if (!fs.existsSync(path.join(__dirname, "..", "logs", "eventLogs"))) {
+      await fsPromises.mkdir(path.join(__dirname, "..", "logs", "eventLogs"));
+    }
+
+    await fsPromises.appendFile(
+      path.join(__dirname, "..", "logs", "eventLogs", logName),
+      logItem
+    );
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const logger = (req, res, next) => {
+    logEvents(`${req.method}\t${req.headers.origin}\t${req.url}`, 'reqLog.txt');
+    console.log(`${req.method} ${req.path}`);
+    next();
 }

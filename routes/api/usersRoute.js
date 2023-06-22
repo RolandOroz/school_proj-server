@@ -1,14 +1,13 @@
 import express from "express";
-const router = express.Router();
-import usersController from "../../controllers/usersController.js";
-import ROLES_LIST from "../../config/rolesList.js";
+import {getAllUsers} from "../../controllers/usersController.js";
+import {ROLES_LIST} from "../../config/rolesList.js";
 
-export default router
-  .route("/")
-  .get(verifyRoles(ROLES_LIST.Admin), usersController.getAllUsers)
-  //.delete(verifyRoles(ROLES_LIST.Admin), usersController.deleteUser);
+export const usersR = app.get("/api", (req, res) => {
+  /* req.status(200).send(JSON.stringify(getAllUsers())); */
+  res.status(200).send("<h1>TEST SERVER NUMBER 2</h1>");
+});
+ 
 
-/* router
-  .route("/:id")
-  .get(verifyRoles(ROLES_LIST.Admin), usersController.getUser); */
+
+
 

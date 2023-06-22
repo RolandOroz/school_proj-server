@@ -1,17 +1,22 @@
 //TODO creating user controller
 
-import { userSchema } from "../sqlEntities/userEntity";
+import { userSchema } from "../sqlEntities/userEntity.js";
 
 export const getAllUsers = async (req, res) => {
-  const users = await userSchema.findAll({
+  const users = await userSchema.findAll(
+/*     {
     order: [["username", "ASC"]],
-    attributes: ["username", "email"],
+    attributes: ["username", "email"], 
     // use for limiting query result/pagination
-/*     offset: 10,
-    limit: 10 */
-  });
-  if (!users) return res.status(204).json({ message: "No users found" });
-  res.json(users);
+     offset: 10,
+    limit: 10
+    
+  } */
+  );
+ console.log(JSON.stringify(getAllUsers, null, 2));
+  
+/*   if (!users) return res.status(204).json({ message: "No users found" });
+  res.json(users); */
 };
 
 // TODO COMPLETE all request later

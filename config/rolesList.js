@@ -1,8 +1,6 @@
-import { userR, adminR, editorR } from "../controllers/rolesListController";
-
 
 export const ROLES_LIST = {
-  "Admin": adminR,
-  "Editor": editorR,
-  "User": userR,
+  "Admin": 63085,
+  "Editor": 9666,
+  "User": 812,
 };
