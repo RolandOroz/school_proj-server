@@ -3,25 +3,14 @@
 import { userSchema } from "../sqlEntities/userEntity.js";
 
 export const getAllUsers = async (req, res) => {
-  const users = await userSchema.findAll(
-/*     {
-    order: [["username", "ASC"]],
-    attributes: ["username", "email"], 
-    // use for limiting query result/pagination
-     offset: 10,
-    limit: 10
-    
-  } */
-  );
- console.log(JSON.stringify(getAllUsers, null, 2));
-  
-/*   if (!users) return res.status(204).json({ message: "No users found" });
-  res.json(users); */
+  const users = await userSchema.findAll();
+    if (!users) return res.status(204).json({ message: "No users found" });
+    res.json(users);
 };
 
 // TODO COMPLETE all request later
 
-/* const deleteUser = async (req, res) => {
+const deleteUser = async (req, res) => {
   if (!req?.body?.id)
     return res.status(400).json({ message: "User ID required" });
   const user = await User.findOne({ _id: req.body.id }).exec();
@@ -34,14 +23,14 @@ export const getAllUsers = async (req, res) => {
   res.json(result);
 };
 
-const getUser = async (req, res) => {
-  if (!req?.params?.id)
+export const getUser = async (req, res) => {
+  if (!req?.params?._id)
     return res.status(400).json({ message: "User ID required" });
-  const user = await User.findOne({ _id: req.params.id }).exec();
+  const user = await userSchema.findOne({ _id: req.params._id });
   if (!user) {
     return res
       .status(204)
-      .json({ message: `User ID ${req.params.id} not found` });
+      .json({ message: `User ID ${req.params._id} not found` });
   }
   res.json(user);
-}; */
+};

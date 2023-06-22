@@ -13,6 +13,7 @@ import { roleSchema } from "./sqlEntities/rolesEntity.js";
 import root from "./routes/root.js"
 import { logger } from "./middleware/logEvents.js";
 import { fileURLToPath } from "node:url";
+import { getAllUsers, getUser } from "./controllers/usersController.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -52,6 +53,9 @@ userSchema.belongsTo(roleSchema, {
 });
 createTableUser();
 createTableRole();
+
+
+
 //*******************TEST ZONE***************//
 
 
@@ -88,9 +92,15 @@ app.use(express.json());
 app.get("/test", (req, res) => {
   res.status(200).send("<h1>TEST__TEST__SERVER_1</h1>");
 });
-app.use("/users", root);
-//app.use("/", import("./routes/root.js"));
 
+
+//Get all users
+app.use("/users", getAllUsers);
+app.use("/user/:_id", getUser);
+//app.use("/", import("./routes/root.js"));
+app.get("/servertest", (req, res) => {
+  res.status(200).send("<h1>TEST SERVER NUMBER 2</h1>");
+});
 // ----TEST----TEST----TEST
 
 
