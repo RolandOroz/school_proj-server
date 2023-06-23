@@ -8,18 +8,20 @@ export const getAllUsers = async (req, res) => {
     res.json(users);
 };
 
-// TODO COMPLETE all request later
-
-const deleteUser = async (req, res) => {
-  if (!req?.body?.id)
+// TODO TESTDELETE BY ID!!!!!!!
+export const deleteUser = async (req, res) => {
+  const id = req.body._id; 
+  if (!id)
     return res.status(400).json({ message: "User ID required" });
-  const user = await User.findOne({ _id: req.body.id }).exec();
+  const user = await userSchema.findByPk(id);
   if (!user) {
     return res
       .status(204)
-      .json({ message: `User ID ${req.body.id} not found` });
+      .json({ message: `User ID ${id} not found` });
   }
-  const result = await user.deleteOne({ _id: req.body.id });
+  const result = await user.destroy({
+    where: { _id: id }
+  });
   res.json(result);
 };
 //DONE
