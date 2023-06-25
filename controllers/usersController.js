@@ -24,7 +24,6 @@ export const deleteUser = async (req, res, next) => {
   const id = req.params._id;
   if (!id) return res.status(400).json({ message: "User ID required" });
   const user = await userSchema.findByPk(id);
-  const userName = req.body.username;
   if (!user) {
     return res.status(204).json({ message: `User ID ${id} not found` });
   }
@@ -33,6 +32,32 @@ export const deleteUser = async (req, res, next) => {
       _id: id,
     },
   });
-  console.log(`User ${userName} was deleted!`);
+  console.log(`User was deleted!`);
   res.json(result);
+};
+
+export const updateUser = async (req, res) => {
+  const id = req.params._id;
+  if (!id) {
+    return res.status(400).json({ message: "ID parameter is required." });
+  }
+  const user = await userSchema.findByPk(id);  
+  if (!user) {
+    return res
+      .status(204)
+      .json({ message: `No employee matches ID ${id}.` });
+  }
+  if (req.body?.username) userSchema.username = req.body.username;
+  if (req.body?.email) userSchema.email = req.body.email;
+  try {
+      const result = await userSchema.update(
+        { username: req.body.username,
+        email: req.body.email },
+        { where: { _id: req.params._id } }
+      );
+      console.log(`User was updated!`);
+      return res.json(result);
+  } catch (error) {
+    console.error(error);  }
+
 };

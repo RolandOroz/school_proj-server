@@ -10,6 +10,7 @@ import { credentials } from "./middleware/credentials.js";
 import { dbMysqlPool } from "./config/dbMysql2/dbMysqlPool.js";
 import { userSchema } from "./sqlEntities/userEntity.js";
 import { roleSchema } from "./sqlEntities/rolesEntity.js";
+import { router as usersRoute } from "./routes/api/usersRoute.js";
 import root from "./routes/root.js"
 //import { logger } from "./middleware/logEvents.js";
 import { fileURLToPath } from "node:url";
@@ -24,7 +25,6 @@ const __dirname = path.dirname(__filename);
 const PORT_MYSQL = process.env.DATABASE_PORT;
 
 //*******************TEST ZONE***************//
-
 
 const createTableUser = async (data) => {
   try {
@@ -56,8 +56,6 @@ userSchema.belongsTo(roleSchema, {
 });
 createTableUser();
 createTableRole();
-
-
 
 //*******************TEST ZONE***************//
 
@@ -92,21 +90,22 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // ----TEST----TEST----TEST
-app.get("/test", (req, res) => {
-  res.status(200).send("<h1>TEST__TEST__SERVER_1</h1>");
-});
 
-
-//Get all users
+/* //Get all users
 app.use("/user/all", getAllUsers);
+//Get one user
 app.use("/user/:_id", getUser);
-//app.use("/", import("./routes/root.js"));
-app.get("/servertest", (req, res) => {
-  res.status(200).send("<h1>TEST SERVER NUMBER 2</h1>");
+app.use("/", (req,res)=> {
+  res.sendFile(path.join(__dirname, "views", "index.html"));
 });
-app.delete("/user_del/:_id", deleteUser);
-// ----TEST----TEST----TEST
 
+app.delete("/user_del/:_id", deleteUser); */
+
+
+
+
+// ----TEST----TEST----TEST
+app.use("/users", usersRoute);
 
 // Custom 404 Page
 app.all("*", (req, res) => {
@@ -119,6 +118,7 @@ app.all("*", (req, res) => {
     res.type("txt").send("404 Not Found");
   }
 });
+
 
 
 connectionDB.execute("open", () => {
