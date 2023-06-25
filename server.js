@@ -11,6 +11,7 @@ import { dbMysqlPool } from "./config/dbMysql2/dbMysqlPool.js";
 import { userSchema } from "./sqlEntities/userEntity.js";
 import { roleSchema } from "./sqlEntities/rolesEntity.js";
 import { router as usersRoute } from "./routes/api/usersRoute.js";
+import { router as registerRoute } from "./routes/registerRoute.js";
 import root from "./routes/root.js"
 //import { logger } from "./middleware/logEvents.js";
 import { fileURLToPath } from "node:url";
@@ -104,8 +105,16 @@ app.delete("/user_del/:_id", deleteUser); */
 
 
 
-// ----TEST----TEST----TEST
+// ----TEST----TEST----TEST--END
+
+
+//serve static files (css, img, text, etc.)
+app.use("/", express.static(path.join(__dirname, "/public")));
+
+//Routes
+app.use("/", root);
 app.use("/users", usersRoute);
+app.use("/register", registerRoute);
 
 // Custom 404 Page
 app.all("*", (req, res) => {

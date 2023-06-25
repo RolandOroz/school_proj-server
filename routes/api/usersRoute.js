@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import {ROLES_LIST} from "../../config/rolesList.js";
+import { ROLES_LIST } from "../../config/rolesList.js";
 import {
   getAllUsers,
   deleteUser,
@@ -19,4 +19,4 @@ router.route("/:_id")
   .delete(deleteUser);
 
 
-export {router};
+export { router };
