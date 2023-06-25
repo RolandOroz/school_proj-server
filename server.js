@@ -11,16 +11,19 @@ import { dbMysqlPool } from "./config/dbMysql2/dbMysqlPool.js";
 import { userSchema } from "./sqlEntities/userEntity.js";
 import { roleSchema } from "./sqlEntities/rolesEntity.js";
 import root from "./routes/root.js"
-import { logger } from "./middleware/logEvents.js";
+//import { logger } from "./middleware/logEvents.js";
 import { fileURLToPath } from "node:url";
-import { getAllUsers, getUser } from "./controllers/usersController.js";
+import {
+  getAllUsers,
+  getUser,
+  deleteUser,
+} from "./controllers/usersController.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PORT_MYSQL = process.env.DATABASE_PORT;
 
 //*******************TEST ZONE***************//
-
 
 
 const createTableUser = async (data) => {
@@ -95,12 +98,13 @@ app.get("/test", (req, res) => {
 
 
 //Get all users
-app.use("/users", getAllUsers);
+app.use("/user/all", getAllUsers);
 app.use("/user/:_id", getUser);
 //app.use("/", import("./routes/root.js"));
 app.get("/servertest", (req, res) => {
   res.status(200).send("<h1>TEST SERVER NUMBER 2</h1>");
 });
+app.delete("/user_del/:_id", deleteUser);
 // ----TEST----TEST----TEST
 
 
@@ -125,7 +129,7 @@ connectionDB.execute("open", () => {
 });
 
 // Custom middleware logger
-app.use(logger)
+//app.use(logger)
 
 
 

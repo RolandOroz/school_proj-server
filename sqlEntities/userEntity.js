@@ -36,7 +36,6 @@ export const userSchema = dbSequlizeMysqlPool.define(
     password: {
       type: DataTypes.CHAR(60),
       allowNull: false,
-      unique: true,
     },
 /*     roles: {
       type: DataTypes.INTEGER.UNSIGNED,
