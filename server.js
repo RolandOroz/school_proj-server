@@ -12,7 +12,10 @@ import { userSchema } from "./sqlEntities/userEntity.js";
 import { roleSchema } from "./sqlEntities/rolesEntity.js";
 import { router as usersRoute } from "./routes/api/usersRoute.js";
 import { router as registerRoute } from "./routes/registerRoute.js";
-import root from "./routes/root.js"
+import { router as refreshRoute } from "./routes/refreshRoute.js";
+import root from "./routes/root.js";
+import {handleLogin} from "./controllers/authController.js";
+import { verifyJWT } from "./middleware/verifyJWT.js"
 //import { logger } from "./middleware/logEvents.js";
 import { fileURLToPath } from "node:url";
 import {
@@ -113,8 +116,13 @@ app.use("/", express.static(path.join(__dirname, "/public")));
 
 //Routes
 app.use("/", root);
-app.use("/users", usersRoute);
+
 app.use("/register", registerRoute);
+app.use("/auth", handleLogin);
+app.use("/refresh", refreshRoute);
+
+app.use(verifyJWT);
+app.use("/users", usersRoute);
 
 // Custom 404 Page
 app.all("*", (req, res) => {
