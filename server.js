@@ -95,18 +95,6 @@ app.use(express.json());
 
 // ----TEST----TEST----TEST
 
-/* //Get all users
-app.use("/user/all", getAllUsers);
-//Get one user
-app.use("/user/:_id", getUser);
-app.use("/", (req,res)=> {
-  res.sendFile(path.join(__dirname, "views", "index.html"));
-});
-
-app.delete("/user_del/:_id", deleteUser); */
-
-
-
 
 // ----TEST----TEST----TEST--END
 
