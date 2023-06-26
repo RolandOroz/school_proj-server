@@ -138,7 +138,7 @@ connectionDB.execute("open", () => {
 //app.use(logger)
 
 
-
+// test for mysql2 roles
 dbMysqlPool.query(
   "SELECT `role_name`, `role_code` FROM `roles` WHERE `_id` = ?;",
   [3],
