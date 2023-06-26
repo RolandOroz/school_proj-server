@@ -109,6 +109,7 @@ app.use("/register", registerRoute);
 app.use("/auth", handleLogin);
 app.use("/refresh", refreshRoute);
 
+// from here JWT token is sending tokens
 app.use(verifyJWT);
 app.use("/users", usersRoute);
 
