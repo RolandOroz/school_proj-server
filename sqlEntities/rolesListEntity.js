@@ -1,5 +1,3 @@
-import { Model } from "sequelize";
-import { userSchema } from "./userEntity.js";
 import {
   dbSequlizeMysqlPool,
   DataTypes,
@@ -27,4 +25,3 @@ export const rolesListSchema = dbSequlizeMysqlPool.define(
     timestamps: true,
   }
 );
-

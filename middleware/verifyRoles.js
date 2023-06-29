@@ -1,4 +1,3 @@
-
 export const verifyRoles = (...allowedRoles) => {
   return (req, res, next) => {
     if (!req?.roles) return res.sendStatus(401);
@@ -7,9 +6,8 @@ export const verifyRoles = (...allowedRoles) => {
     const compare = rolesArray.includes(userRole);
     console.log(rolesArray);
     console.log(userRole);
-    console.log("compare",compare);
-    if(compare === false )
-    return res.sendStatus(401);
+    console.log("compare", compare);
+    if (compare === false) return res.sendStatus(401);
     next();
   };
 };
