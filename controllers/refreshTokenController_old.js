@@ -11,8 +11,7 @@ export const handleRefreshToken = async (req, res) => {
     httpOnly: true,
     sameSite: "None",
     //Comment when in DEV MODE
-    //TODO PRODUCTION uncomment: secure: true
-    //secure: true,
+    secure: true,
     // set to 1 Day (2 min only for DEV MODE)
     //maxAge: 24 * 60 * 60 * 1000,
     maxAge: 60 * 1000,
@@ -21,9 +20,9 @@ export const handleRefreshToken = async (req, res) => {
   const findUser = await userSchema.findOne({
     where: { refreshToken: refreshToken },
   });
- // const foundUser = await findUser.dataValues.refreshToken;
+  // const foundUser = await findUser.dataValues.refreshToken;
   // Detected refresh token reuse!
-  /* if (!foundUser) {
+  if (!findUser) {
     jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET,
@@ -39,9 +38,7 @@ export const handleRefreshToken = async (req, res) => {
       }
     );
     return res.sendStatus(403); // Forbidden
-  } */
-
-  //const newRefreshToken = findUser.dataValues.refreshToken;
+  }
 
   // evaluate JWTs
   jwt.verify(
@@ -49,27 +46,16 @@ export const handleRefreshToken = async (req, res) => {
     process.env.REFRESH_TOKEN_SECRET,
     async (err, decoded) => {
       if (err) {
-        //findUser.dataValues.refreshToken = newRefreshToken;
         console.log(err);
         const result = await userSchema.save({
-          refreshToken: newRefreshToken
+          refreshToken: newRefreshToken,
         });
       }
       const usernameF = findUser.dataValues.username;
-      if (err || usernameF !== decoded.username)
-        return res.sendStatus(405);
+      if (err || usernameF !== decoded.username) return res.sendStatus(405);
 
       // Refresh token was still valid
       const roles = findUser.dataValues.roleId;
-      /*       const roles = await userSchema.findOne({
-        include: [
-          {
-            model: roleSchema,
-            where: { _id: req.body.roleId },
-          },
-        ],
-        where: { username: req.body.username },
-      }); */
       const accessToken = jwt.sign(
         {
           UserInfo: {
@@ -96,7 +82,9 @@ export const handleRefreshToken = async (req, res) => {
       const saveUser = await userSchema.findOne({
         where: { username: findUser.dataValues.username },
       });
-      userSchema.refreshToken = newRefreshToken;
+      const result = await findUser.update({ refreshToken: refreshToken });
+
+      console.log(result);
 
       // Creates Secure Cookie with refresh token
       res.cookie("jwt", newRefreshToken, {

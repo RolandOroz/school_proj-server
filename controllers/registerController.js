@@ -2,7 +2,7 @@ import { userSchema } from "../sqlEntities/userEntity.js";
 import bcrypt from "bcrypt";
 
 export const handleNewUser = async ( req, res) => {
-    const { username, password, email } = req.body;
+    const { username, password, email, roles } = req.body;
     const user = req.body.username;
     if (!username || !password)
       return res
@@ -23,7 +23,7 @@ export const handleNewUser = async ( req, res) => {
           username: username,
           email: email,
           password: hashPwd,
-          roleId: 3,
+          roles: roles,
         });
 
         console.log(result);

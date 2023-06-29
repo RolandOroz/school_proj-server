@@ -3,7 +3,7 @@ import { userSchema } from "../sqlEntities/userEntity.js";
 //DONE
 export const getAllUsers = async (req, res) => {
   const users = await userSchema.findAll();
-  if (!users) return res.status(204).jsonp({ message: "No users found" });
+  if (!users) return res.status(204).json({ message: "No users found" });
   res.json(users);
 };
 
@@ -48,11 +48,15 @@ export const updateUser = async (req, res) => {
   }
   if (req.body?.username) userSchema.username = req.body.username;
   if (req.body?.email) userSchema.email = req.body.email;
+  //hash password
+  if (req.body?.password) userSchema.password = req.body.password;
+  if (req.body?.roleId) userSchema.roleId = req.body.roleId;
   try {
     const result = await userSchema.update(
       {
         username: req.body.username,
         email: req.body.email,
+        password: req.body.password,
         roleId: req.body.roleId,
       },
       { where: { _id: req.params._id } }

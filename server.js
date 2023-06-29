@@ -10,13 +10,16 @@ import { corsOptions } from "./config/corsOptions.js";
 import { credentials } from "./middleware/credentials.js";
 import { dbMysqlPool } from "./config/dbMysql2/dbMysqlPool.js";
 import { userSchema } from "./sqlEntities/userEntity.js";
-import { roleSchema } from "./sqlEntities/rolesEntity.js";
+import { rolesListSchema } from "./sqlEntities/rolesListEntity.js";
+//import { roleSchema } from "./sqlEntities/rolesEntity.js";
 import { router as usersRoute } from "./routes/api/usersRoute.js";
+import { router as authRoute } from "./routes/authRoute.js";
 import { router as registerRoute } from "./routes/registerRoute.js";
 import { router as refreshRoute } from "./routes/refreshRoute.js";
+import { router as logoutRoute } from "./routes/logoutRoute.js";
 import root from "./routes/root.js";
-import {handleLogin} from "./controllers/authController.js";
-import { verifyJWT } from "./middleware/verifyJWT.js"
+
+import { verifyJWT } from "./middleware/verifyJWT.js";
 //import { logger } from "./middleware/logEvents.js";
 import { fileURLToPath } from "node:url";
 import {
@@ -30,40 +33,55 @@ const __dirname = path.dirname(__filename);
 const PORT_MYSQL = process.env.DATABASE_PORT;
 
 //*******************TEST ZONE***************//
-
+// TODO move out from server.js
 const createTableUser = async (data) => {
   try {
     await userSchema.sync();
     console.log("Table Created!");
-    console.log(data);
   } catch (error) {
     console.error(error);
   }
 };
 
-const createTableRole =  async (data) => {
+/* const createTableRole = async (data) => {
   try {
     await roleSchema.sync();
     console.log("Table Created!");
-    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}; */
+
+const createTableRolesList = async (data) => {
+  try {
+    await rolesListSchema.sync();
+    console.log("Table Created!");
   } catch (error) {
     console.error(error);
   }
 };
 
-
-roleSchema.hasMany(userSchema, {
+/* roleSchema.hasMany(userSchema, {
   onUpdate: "CASCADE",
   onDelete: "CASCADE",
 });
 userSchema.belongsTo(roleSchema, {
   onDelete: "CASCADE",
-});
+}); */
+
+ rolesListSchema.hasMany(userSchema, {   
+   foreignKey: "roles",
+   
+   
+ });
+ userSchema.belongsTo(rolesListSchema, {
+   foreignKey: "roles",
+ }); 
 createTableUser();
-createTableRole();
+createTableRolesList();
+//createTableRole();
 
 //*******************TEST ZONE***************//
-
 
 const app = express();
 app.use(
@@ -98,19 +116,18 @@ app.use(cookieParser());
 
 // ----TEST----TEST----TEST
 
-
 // ----TEST----TEST----TEST--END
-
 
 //serve static files (css, img, text, etc.)
 app.use("/", express.static(path.join(__dirname, "/public")));
 
 //Routes
 app.use("/", root);
-
 app.use("/register", registerRoute);
-app.use("/auth", handleLogin);
+app.use("/auth", authRoute);
 app.use("/refresh", refreshRoute);
+app.use("/logout", logoutRoute);
+
 
 // from here JWT token is sending tokens
 app.use(verifyJWT);
@@ -129,7 +146,6 @@ app.all("*", (req, res) => {
 });
 
 
-
 connectionDB.execute("open", () => {
   // Port listener
   app.listen(PORT_SERVER, () =>
@@ -139,16 +155,3 @@ connectionDB.execute("open", () => {
 
 // Custom middleware logger
 //app.use(logger)
-
-
-// test for mysql2 roles
-dbMysqlPool.query(
-  "SELECT `role_name`, `role_code` FROM `roles` WHERE `_id` = ?;",
-  [3],
-  (err, results) => {
-    console.log(JSON.stringify(Object.values(results[0])));
-    if (err) return console.error(err);
-  }
-);
-
-

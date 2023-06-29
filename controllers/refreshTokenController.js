@@ -30,9 +30,9 @@ const roles = foundUser.dataValues.roleId;
                   },
                 },
                 process.env.ACCESS_TOKEN_SECRET,
-                // make it 5min min (45s only in DEV MODE)
+                // make it 5min - 15min (45s only in DEV MODE)
                 //{ expiresIn: "300s" }
-                { expiresIn: "10s" }
+                { expiresIn: "30s" }
               );
               res.json({roles, accessToken });
               console.log(roles);

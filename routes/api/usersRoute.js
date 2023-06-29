@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import { ROLES_LIST } from "../../config/rolesList.js";
+import {verifyRoles} from "../../middleware/verifyRoles.js"
 import {
   getAllUsers,
   deleteUser,
@@ -14,7 +15,7 @@ router
   .get(getAllUsers)
 
 router.route("/:_id")
-  .get(getUser)
+  .get(verifyRoles(ROLES_LIST.Admin),getUser)
   .put(updateUser)
   .delete(deleteUser);
 

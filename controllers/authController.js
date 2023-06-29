@@ -1,5 +1,5 @@
 import { userSchema } from "../sqlEntities/userEntity.js";
-import { roleSchema } from "../sqlEntities/rolesEntity.js";
+import { rolesListSchema } from "../sqlEntities/rolesListEntity.js";
 
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
@@ -16,18 +16,18 @@ export const handleLogin = async (req, res) => {
     if(!foundUser) return res.sendStatus(401); // unauthorized
 
     // evaluate password
-    const match = await bcrypt.compare(password, foundUser.password);
+    const match = await bcrypt.compare(password, foundUser.dataValues.password);
     if(match) {
       const user = await userSchema.findOne({
         include: [
           {
-            model: roleSchema,
-            where: { _id: req.body.roleId },
+            model: rolesListSchema,
+            where: { roles_code: req.body.roles },
           },
         ],
         where: { username: req.body.username },
       });
-      const roles = user.role.role_code;
+      const roles = user.roles;
       if (!roles) return res.sendStatus(401); // unauthorized
       // TODO  logger here
       //console.log(rolesObj);
@@ -35,7 +35,7 @@ export const handleLogin = async (req, res) => {
       const accessToken = jwt.sign(
         {
           UserInfo: {
-            username: foundUser.username,
+            username: foundUser.dataValues.username,
             roles: roles,
           },
         },
@@ -44,7 +44,7 @@ export const handleLogin = async (req, res) => {
         { expiresIn: "300s" }
       );
     const refreshToken = jwt.sign(
-      { "username": foundUser.username },
+      { username: foundUser.dataValues.username },
       process.env.REFRESH_TOKEN_SECRET,
       // set to 'n' Day (2 min only for DEV MODE)
       { expiresIn: "300s" }
@@ -53,10 +53,15 @@ export const handleLogin = async (req, res) => {
     foundUser.refreshToken = refreshToken;
     const result = await foundUser.save();
     //TODO logger here
-    //console.log("from authController result: ", result);
-    //console.log("from authController roles: ",roles);
+
     
-    res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000}); // secure:true,
+    res.cookie("jwt", refreshToken, {
+      httpOnly: true,
+      sameSite: "None",
+      secure: true,
+      // set to 1 hour (2 min only for DEV MODE)
+      maxAge: 60 * 60 * 1000,
+    }); // 
     res.json({ roles, accessToken });
     } else {
         res.sendStatus(401);
