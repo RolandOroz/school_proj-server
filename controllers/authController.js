@@ -30,31 +30,31 @@ export const handleLogin = async (req, res) => {
       if (!roles) return res.sendStatus(401); // unauthorized
       const rolesObj = Object.values(roles).filter(Boolean);
       // TODO  logger here
-      console.log(rolesObj);
+      //console.log(rolesObj);
 
       const accessToken = jwt.sign(
       {
         "UserInfo": {
           "username": foundUser.username,
-          "roles": roles,
+          "roles": rolesObj.role_code,
         }
       },
       process.env.ACCESS_TOKEN_SECRET,
       // set to 'n' min (45s only for DEV MODE)
-      { expiresIn: "20s" }
+      { expiresIn: "300s" }
     );
     const refreshToken = jwt.sign(
       { "username": foundUser.username },
       process.env.REFRESH_TOKEN_SECRET,
       // set to 'n' Day (2 min only for DEV MODE)
-      { expiresIn: "30" }
+      { expiresIn: "300s" }
     );
     // Saving refreshToken with current user
     foundUser.refreshToken = refreshToken;
     const result = await foundUser.save();
     //TODO logger here
-    console.log(result);
-    console.log(roles);
+    //console.log("from authController result: ", result);
+    console.log("from authController roles: ",roles);
     res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000}); // secure:true,
     res.json({ roles, accessToken });
     } else {

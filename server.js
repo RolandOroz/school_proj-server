@@ -5,6 +5,7 @@ import express from "express";
 import { expressCspHeader, INLINE, NONE, SELF } from "express-csp-header";
 import path from "path";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { corsOptions } from "./config/corsOptions.js";
 import { credentials } from "./middleware/credentials.js";
 import { dbMysqlPool } from "./config/dbMysql2/dbMysqlPool.js";
@@ -92,6 +93,8 @@ app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
 // built-in middleware for json
 app.use(express.json());
+//middleware for cookies
+app.use(cookieParser());
 
 // ----TEST----TEST----TEST
 
