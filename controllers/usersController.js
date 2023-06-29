@@ -50,14 +50,14 @@ export const updateUser = async (req, res) => {
   if (req.body?.email) userSchema.email = req.body.email;
   //hash password
   if (req.body?.password) userSchema.password = req.body.password;
-  if (req.body?.roleId) userSchema.roleId = req.body.roleId;
+  if (req.body?.roles) userSchema.roles = req.body.roles;
   try {
     const result = await userSchema.update(
       {
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
-        roleId: req.body.roleId,
+        roles: req.body.roles,
       },
       { where: { _id: req.params._id } }
     );

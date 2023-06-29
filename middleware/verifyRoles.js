@@ -2,7 +2,7 @@ export const verifyRoles = (...allowedRoles) => {
   return (req, res, next) => {
     if (!req?.roles) return res.sendStatus(401);
     const rolesArray = [...allowedRoles];
-    const userRole = JSON.stringify(req.roles);
+    const userRole = req.roles;
     const compare = rolesArray.includes(userRole);
     console.log(rolesArray);
     console.log(userRole);

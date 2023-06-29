@@ -3,7 +3,7 @@ const rc_2 = process.env.RC_2;
 const rc_3 = process.env.RC_3;
 
 export const ROLES_LIST = {
-  Admin: rc_1,
-  Editor: rc_2,
-  User: rc_3,
+  "Admin": 110,
+  "Editor": 210,
+  "User": 310,
 };

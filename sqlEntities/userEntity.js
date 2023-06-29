@@ -38,7 +38,8 @@ export const userSchema = dbSequlizeMysqlPool.define(
     },
     roles: {
       type: DataTypes.SMALLINT.UNSIGNED,
-      allowNull: false      
+      allowNull: false,
+      defaultValue: 310      
     },
     refreshToken: {
       type: DataTypes.STRING(255),
