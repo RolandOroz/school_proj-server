@@ -28,20 +28,3 @@ export const rolesListSchema = dbSequlizeMysqlPool.define(
   }
 );
 
-/* rolesListSchema.hasMany(userSchema, {
-  foreignKey: "roles",
-  onUpdate: "CASCADE",
-  onDelete: "CASCADE",
-});
-userSchema.belongsTo(rolesListSchema, {
-  onDelete: "CASCADE",
-}); */
-
-/* rolesListSchema.hasMany(userSchema, {
-  foreignKey: "role_code",
-  foreignKey: "roles",
-  as: "users",
-});
-userSchema.belongsTo(rolesListSchema, {
-  foreignKey: "role_code",
-}); */
