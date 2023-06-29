@@ -17,6 +17,8 @@ import { router as authRoute } from "./routes/authRoute.js";
 import { router as registerRoute } from "./routes/registerRoute.js";
 import { router as refreshRoute } from "./routes/refreshRoute.js";
 import { router as logoutRoute } from "./routes/logoutRoute.js";
+import { router as page404Route } from "./routes/page404Route.js";
+
 import root from "./routes/root.js";
 
 import { verifyJWT } from "./middleware/verifyJWT.js";
@@ -43,15 +45,6 @@ const createTableUser = async (data) => {
   }
 };
 
-/* const createTableRole = async (data) => {
-  try {
-    await roleSchema.sync();
-    console.log("Table Created!");
-  } catch (error) {
-    console.error(error);
-  }
-}; */
-
 const createTableRolesList = async (data) => {
   try {
     await rolesListSchema.sync();
@@ -61,14 +54,7 @@ const createTableRolesList = async (data) => {
   }
 };
 
-/* roleSchema.hasMany(userSchema, {
-  onUpdate: "CASCADE",
-  onDelete: "CASCADE",
-});
-userSchema.belongsTo(roleSchema, {
-  onDelete: "CASCADE",
-}); */
-
+//FK constraints
 rolesListSchema.hasMany(userSchema, {
   foreignKey: "roles",
 });
@@ -77,7 +63,6 @@ userSchema.belongsTo(rolesListSchema, {
 });
 createTableUser();
 createTableRolesList();
-//createTableRole();
 
 //*******************TEST ZONE***************//
 
@@ -112,15 +97,14 @@ app.use(express.json());
 //middleware for cookies
 app.use(cookieParser());
 
-// ----TEST----TEST----TEST
-
-// ----TEST----TEST----TEST--END
 
 //serve static files (css, img, text, etc.)
 app.use("/", express.static(path.join(__dirname, "/public")));
 
 //Routes
+
 app.use("/", root);
+
 app.use("/register", registerRoute);
 app.use("/auth", authRoute);
 app.use("/refresh", refreshRoute);
@@ -130,17 +114,10 @@ app.use("/logout", logoutRoute);
 app.use(verifyJWT);
 app.use("/users", usersRoute);
 
-// Custom 404 Page
-app.all("*", (req, res) => {
-  res.status(404);
-  if (req.accepts("html")) {
-    res.sendFile(path.join(__dirname, "views", "404.html"));
-  } else if (req.accepts("json")) {
-    res.json({ error: "404 Not Found!" });
-  } else {
-    res.type("txt").send("404 Not Found");
-  }
-});
+//TODO Finishs Custom 404 Page
+//app.use("*", page404Route);
+
+
 
 connectionDB.execute("open", () => {
   // Port listener
