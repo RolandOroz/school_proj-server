@@ -18,7 +18,7 @@ export const handleLogin = async (req, res) => {
     // evaluate password
     const match = await bcrypt.compare(password, foundUser.password);
     if(match) {
-      const roles = await userSchema.findOne({
+      const user = await userSchema.findOne({
         include: [
           {
             model: roleSchema,
@@ -27,22 +27,22 @@ export const handleLogin = async (req, res) => {
         ],
         where: { username: req.body.username },
       });
+      const roles = user.role.role_code;
       if (!roles) return res.sendStatus(401); // unauthorized
-      const rolesObj = Object.values(roles).filter(Boolean);
       // TODO  logger here
       //console.log(rolesObj);
 
       const accessToken = jwt.sign(
-      {
-        "UserInfo": {
-          "username": foundUser.username,
-          "roles": rolesObj.role_code,
-        }
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      // set to 'n' min (45s only for DEV MODE)
-      { expiresIn: "300s" }
-    );
+        {
+          UserInfo: {
+            username: foundUser.username,
+            roles: roles,
+          },
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        // set to 'n' min (45s only for DEV MODE)
+        { expiresIn: "300s" }
+      );
     const refreshToken = jwt.sign(
       { "username": foundUser.username },
       process.env.REFRESH_TOKEN_SECRET,
@@ -54,7 +54,8 @@ export const handleLogin = async (req, res) => {
     const result = await foundUser.save();
     //TODO logger here
     //console.log("from authController result: ", result);
-    console.log("from authController roles: ",roles);
+    //console.log("from authController roles: ",roles);
+    
     res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000}); // secure:true,
     res.json({ roles, accessToken });
     } else {

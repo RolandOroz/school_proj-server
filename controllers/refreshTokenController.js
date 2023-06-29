@@ -11,19 +11,22 @@ export const handleRefreshToken = async (req, res) => {
   const foundUser = await userSchema.findOne({
     where: { refreshToken: refreshToken },
   });
+  
   if (!foundUser) return res.sendStatus(403); // Forbidden
 
   // Evaluate JWT
   jwt.verify(
+
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
     async (err, decoded) => {
         if (err || foundUser.dataValues.username !== decoded.username);
-
+const roles = foundUser.dataValues.roleId;
               const accessToken = jwt.sign(
                 {
                   UserInfo: {
-                    username: decoded.username
+                    username: decoded.username,
+                    roles: roles
                   },
                 },
                 process.env.ACCESS_TOKEN_SECRET,
@@ -31,7 +34,7 @@ export const handleRefreshToken = async (req, res) => {
                 //{ expiresIn: "300s" }
                 { expiresIn: "10s" }
               );
-              res.json({ accessToken });
-              //console.log(rolesObj);
+              res.json({roles, accessToken });
+              console.log(roles);
     })
 }
