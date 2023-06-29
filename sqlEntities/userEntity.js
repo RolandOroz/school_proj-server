@@ -2,7 +2,6 @@ import {
   dbSequlizeMysqlPool,
   DataTypes,
 } from "../config/dbSequelizeMysql/dbSequelizeMysqlPool.js";
-import { roleSchema } from "./rolesEntity.js";
 
 
 // SQL "users" table

@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import { ROLES_LIST } from "../../config/rolesList.js";
-import {verifyRoles} from "../../middleware/verifyRoles.js"
+import { verifyRoles } from "../../middleware/verifyRoles.js";
 import {
   getAllUsers,
   deleteUser,
@@ -9,15 +9,12 @@ import {
   updateUser,
 } from "../../controllers/usersController.js";
 
+router.route("/").get(getAllUsers);
 
 router
-  .route("/")
-  .get(getAllUsers)
-
-router.route("/:_id")
-  .get(verifyRoles(ROLES_LIST.Admin),getUser)
-  .put(updateUser)
-  .delete(deleteUser);
-
+  .route("/:_id")
+  .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), getUser)
+  .put(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), updateUser)
+  .delete(verifyRoles(ROLES_LIST.Admin), deleteUser);
 
 export { router };
