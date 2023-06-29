@@ -102,9 +102,7 @@ app.use(cookieParser());
 app.use("/", express.static(path.join(__dirname, "/public")));
 
 //Routes
-
 app.use("/", root);
-
 app.use("/register", registerRoute);
 app.use("/auth", authRoute);
 app.use("/refresh", refreshRoute);
