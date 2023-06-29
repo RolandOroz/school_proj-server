@@ -69,14 +69,12 @@ userSchema.belongsTo(roleSchema, {
   onDelete: "CASCADE",
 }); */
 
- rolesListSchema.hasMany(userSchema, {   
-   foreignKey: "roles",
-   
-   
- });
- userSchema.belongsTo(rolesListSchema, {
-   foreignKey: "roles",
- }); 
+rolesListSchema.hasMany(userSchema, {
+  foreignKey: "roles",
+});
+userSchema.belongsTo(rolesListSchema, {
+  foreignKey: "roles",
+});
 createTableUser();
 createTableRolesList();
 //createTableRole();
@@ -128,7 +126,6 @@ app.use("/auth", authRoute);
 app.use("/refresh", refreshRoute);
 app.use("/logout", logoutRoute);
 
-
 // from here JWT token is sending tokens
 app.use(verifyJWT);
 app.use("/users", usersRoute);
@@ -145,7 +142,6 @@ app.all("*", (req, res) => {
   }
 });
 
-
 connectionDB.execute("open", () => {
   // Port listener
   app.listen(PORT_SERVER, () =>
@@ -153,5 +149,5 @@ connectionDB.execute("open", () => {
   );
 });
 
-// Custom middleware logger
+// TODOCustom middleware logger
 //app.use(logger)
