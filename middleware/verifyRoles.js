@@ -1,5 +1,3 @@
-import { userSchema } from "../sqlEntities/userEntity.js";
-import { ROLES_LIST } from "../config/rolesList.js";
 
 export const verifyRoles = (...allowedRoles) => {
   return (req, res, next) => {
