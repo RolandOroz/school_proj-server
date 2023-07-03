@@ -84,14 +84,15 @@ const connectionDB = dbMysqlPool;
 // Handle options credential check - before CORS!
 // and fetch cookies credentials requirement
 //app.use(credentials);
+// "content-type: application/x-www-form-urlencoded"
 
 // Cross Origin Resource Sharing
-//pp.use(cors(corsOptions));
+//app.use(cors(corsOptions));
 //app.use(cors())
-app.use(cors({ credentials: false }));
+app.use(cors({ credentials: true,
+origin: "http://localhost:3000" }));
 // built-in middleware to handle URL encoded data
 // in other words, form data:
-// "content-type: application/x-www-form-urlencoded"
 app.use(express.urlencoded({ extended: true }));
 // built-in middleware for json
 app.use(express.json());
