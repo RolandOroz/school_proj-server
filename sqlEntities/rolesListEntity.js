@@ -10,7 +10,7 @@ export const rolesListSchema = dbSequlizeMysqlPool.define(
       type: DataTypes.SMALLINT.UNSIGNED,
       primaryKey: true,
       allowNull: false,
-      defaultValue: 110,
+      defaultValue: 310,
     },
     role_name: {
       type: DataTypes.STRING,

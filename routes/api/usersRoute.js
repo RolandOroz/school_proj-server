@@ -9,7 +9,9 @@ import {
   updateUser,
 } from "../../controllers/usersController.js";
 
-router.route("/").get(getAllUsers);
+router
+  .route("/")
+  .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), getAllUsers);
 
 router
   .route("/:_id")
