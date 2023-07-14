@@ -12,7 +12,7 @@ import {
 router
   .route("/")
   .get(
-    verifyRoles(ROLES_LIST.User, ROLES_LIST.Admin, ROLES_LIST.Editor),
+    verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),
     getAllUsers
   );
   //.get(getAllUsers);
