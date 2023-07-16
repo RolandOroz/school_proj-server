@@ -22,7 +22,7 @@ export const handleLogin = async (req, res) => {
         include: [
           {
             model: rolesListSchema,
-            where: { roles_code: req.body.roles },
+           // where: { roles_code: req.body.roles },
           },
         ],
         where: { username: req.body.username },

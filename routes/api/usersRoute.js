@@ -11,16 +11,12 @@ import {
 
 router
   .route("/")
-  .get(
-    verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),
-    getAllUsers
-  );
-  //.get(getAllUsers);
+  .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), getAllUsers);
 
 router
   .route("/:_id")
-  .get(verifyRoles(ROLES_LIST.Admin ), getUser)
-  .put(verifyRoles(ROLES_LIST.Admin , ROLES_LIST.Editor), updateUser)
+  .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), getUser)
+  .put(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), updateUser)
   .delete(verifyRoles(ROLES_LIST.Admin), deleteUser);
 
 export { router };
