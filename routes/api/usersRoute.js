@@ -11,7 +11,13 @@ import {
 
 router
   .route("/")
-  .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), getAllUsers);
+  .get(verifyRoles(ROLES_LIST.Admin), getAllUsers);
+
+  router.route("/editor", verifyRoles(ROLES_LIST.Editor));
+/* 
+  router
+  .route("/users")
+  .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor, ROLES_LIST.User), getAllUsers); */
 
 router
   .route("/:_id")
