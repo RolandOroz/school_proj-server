@@ -22,7 +22,6 @@ import { router as logoutRoute } from "./routes/logoutRoute.js";
 import root from "./routes/root.js";
 
 import { verifyJWT } from "./middleware/verifyJWT.js";
-//import { loggerEv } from "./middleware/logEvents.js";
 import { fileURLToPath } from "node:url";
 import {
   getAllUsers,
@@ -30,6 +29,7 @@ import {
   deleteUser,
 } from "./controllers/usersController.js";
 import { logger } from "./middleware/logger.js";
+import { logEvents } from "./middleware/logEvents.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -121,6 +121,6 @@ app.use("/users", usersRoute);
 connectionDB.execute("open", () => {
   // Port listener
   app.listen(PORT_SERVER, () =>
-    logger.info(`Server connected on port: ${PORT_SERVER}`)
+    logger.info(`Server connected on port: ${PORT_SERVER}`)    
   );
 });
