@@ -27,7 +27,7 @@ export const logEvents = async (message, logName) => {
   }
 };
 
-export const logger = (req, res, next) => {
+export const loggerEv = (req, res, next) => {
     logEvents(`${req.method}\t${req.headers.origin}\t${req.url}`, 'reqLog.txt');
     console.log(`${req.method} ${req.path}`);
     next();

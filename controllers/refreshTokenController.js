@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import { userSchema } from "../sqlEntities/userEntity.js";
 import jwt from "jsonwebtoken";
+import { logger } from "../middleware/logger.js";
 
 export const handleRefreshToken = async (req, res) => {
   const cookies = req.cookies;
@@ -34,7 +35,8 @@ export const handleRefreshToken = async (req, res) => {
         { expiresIn: "30s" }
       );
       res.json({ roles, accessToken });
-      console.log(roles);
-    }
+     logger.info("Refresh Token Activated.");
+    },
+    
   );
 };

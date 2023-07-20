@@ -17,18 +17,19 @@ import { router as authRoute } from "./routes/authRoute.js";
 import { router as registerRoute } from "./routes/registerRoute.js";
 import { router as refreshRoute } from "./routes/refreshRoute.js";
 import { router as logoutRoute } from "./routes/logoutRoute.js";
-import { router as page404Route } from "./routes/page404Route.js";
+//import { router as page404Route } from "./routes/page404Route.js";
 
 import root from "./routes/root.js";
 
 import { verifyJWT } from "./middleware/verifyJWT.js";
-//import { logger } from "./middleware/logEvents.js";
+//import { loggerEv } from "./middleware/logEvents.js";
 import { fileURLToPath } from "node:url";
 import {
   getAllUsers,
   getUser,
   deleteUser,
 } from "./controllers/usersController.js";
+import { logger } from "./middleware/logger.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -117,14 +118,9 @@ app.use("/users", usersRoute);
 //TODO Finishs Custom 404 Page
 //app.use("*", page404Route);
 
-
-
 connectionDB.execute("open", () => {
   // Port listener
   app.listen(PORT_SERVER, () =>
-    console.log(`Server connected on port: ${PORT_SERVER}`)
+    logger.info(`Server connected on port: ${PORT_SERVER}`)
   );
 });
-
-// TODOCustom middleware logger
-//app.use(logger)

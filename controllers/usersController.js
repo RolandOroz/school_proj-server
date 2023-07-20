@@ -1,3 +1,4 @@
+import { logger } from "../middleware/logger.js";
 import { userSchema } from "../sqlEntities/userEntity.js";
 
 //DONE
@@ -32,8 +33,9 @@ export const deleteUser = async (req, res, next) => {
       _id: id,
     },
   });
-  console.log(`User was deleted!`);
+  
   res.json(result);
+  logger.info( `User was deleted!`);
 };
 
 // DONE
@@ -61,9 +63,9 @@ export const updateUser = async (req, res) => {
       },
       { where: { _id: req.params._id } }
     );
-    console.log(`User was updated!`);
+    logger.info(`User was updated!`);
     return res.json(result);
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 };

@@ -1,4 +1,1 @@
-{"level":"info","message":"test message %s","service":"user-service"}
-{"level":"info","message":"test message %s","service":"user-service"}
-{"level":"info","message":"test message %s","service":"user-service"}
-{"level":"info","message":"test message %s","service":"user-service"}
+{"level":"info","message":"Server connected on port: 3500"}

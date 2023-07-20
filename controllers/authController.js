@@ -32,6 +32,7 @@ export const handleLogin = async (req, res) => {
       // TODO  logger here
 
       const accessToken = jwt.sign(
+        
         {
           UserInfo: {
             username: foundUser.dataValues.username,
@@ -50,10 +51,7 @@ export const handleLogin = async (req, res) => {
     );
     // Saving refreshToken with current user
     foundUser.refreshToken = refreshToken;
-    const result = await foundUser.save();
-    //TODO logger here
-
-    
+    const result = await foundUser.save();    
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
       sameSite: "None",

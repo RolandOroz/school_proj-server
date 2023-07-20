@@ -1,3 +1,4 @@
+import { logger } from "../middleware/logger.js";
 import { userSchema } from "../sqlEntities/userEntity.js";
 import bcrypt from "bcrypt";
 
@@ -8,6 +9,7 @@ export const handleNewUser = async (req, res) => {
     return res
       .status(400)
       .json({ message: "Username and password are required!" });
+      logger.info("Succesfull Registration.")
 
   // Check for duplicate username in the DB
   const duplicateUsername = await userSchema.findOne({
@@ -26,10 +28,11 @@ export const handleNewUser = async (req, res) => {
       roles: roles,
     });
 
-    console.log(result);
+    logger.info(result);
 
     res.status(201).json({ success: `New user ${username} created!` });
   } catch (error) {
     res.status(500).json({ message: error.message });
+    logger.error((error.message))
   }
 };
