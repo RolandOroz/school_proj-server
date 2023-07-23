@@ -1,4 +1,5 @@
 // TODO Make an winston logger
+// change name to errorHandler
 import { format } from "date-fns";
 import { v4 as uuid } from "uuid";
 import fs from "fs";
